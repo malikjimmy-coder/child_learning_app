@@ -31,13 +31,21 @@ class LessonProvider with ChangeNotifier {
         _allLessons = [];
       }
 
+      // Sort lessons by lesson number first
+      _allLessons.sort((a, b) => a.lessonNumber.compareTo(b.lessonNumber));
+
       // Sync with saved progress if provided
       if (completedLessons != null) {
         _syncWithProgress(completedLessons);
       }
 
-      // Initialize lesson locks
+      // Initialize lesson locks after progress sync
       _updateLessonLocks();
+      
+      debugPrint('Loaded ${_allLessons.length} lessons for $category');
+      for (var lesson in _allLessons) {
+        debugPrint('Lesson ${lesson.lessonNumber}: ${lesson.title} - Completed: ${lesson.isCompleted}, Locked: ${lesson.isLocked}');
+      }
     } catch (e) {
       debugPrint('Error loading lessons: $e');
       _allLessons = [];
@@ -60,7 +68,7 @@ class LessonProvider with ChangeNotifier {
   void _updateLessonLocks() {
     if (_allLessons.isEmpty) return;
 
-    // Sort lessons by lesson number
+    // Sort lessons by lesson number to ensure correct order
     _allLessons.sort((a, b) => a.lessonNumber.compareTo(b.lessonNumber));
 
     // First lesson is always unlocked
@@ -68,12 +76,12 @@ class LessonProvider with ChangeNotifier {
 
     // Lock/unlock subsequent lessons based on previous lesson completion
     for (int i = 1; i < _allLessons.length; i++) {
-      // Unlock if previous lesson is completed
+      // Unlock if the immediately previous lesson is completed
       _allLessons[i].isLocked = !_allLessons[i - 1].isCompleted;
 
       debugPrint('Lesson ${_allLessons[i].lessonNumber}: ${_allLessons[i].title} - '
           'isLocked: ${_allLessons[i].isLocked}, '
-          'Previous lesson completed: ${_allLessons[i - 1].isCompleted}');
+          'Previous lesson (${_allLessons[i - 1].lessonNumber}) completed: ${_allLessons[i - 1].isCompleted}');
     }
   }
 
@@ -192,8 +200,29 @@ class LessonProvider with ChangeNotifier {
 
   // Reload lessons with current progress
   void reloadWithProgress(Map<String, bool> completedLessons) {
+    // Ensure lessons are sorted before syncing
+    _allLessons.sort((a, b) => a.lessonNumber.compareTo(b.lessonNumber));
+    
+    // Sync with progress
     _syncWithProgress(completedLessons);
+    
+    // Update locks after progress sync
     _updateLessonLocks();
+    
+    debugPrint('Reloaded lessons with progress:');
+    for (var lesson in _allLessons) {
+      debugPrint('Lesson ${lesson.lessonNumber}: ${lesson.title} - Completed: ${lesson.isCompleted}, Locked: ${lesson.isLocked}');
+    }
+    
     notifyListeners();
+  }
+
+  // Force refresh lesson locks (useful when returning from lesson detail)
+  void refreshLessonLocks() {
+    if (_allLessons.isNotEmpty) {
+      _updateLessonLocks();
+      notifyListeners();
+      debugPrint('Lesson locks refreshed');
+    }
   }
 }

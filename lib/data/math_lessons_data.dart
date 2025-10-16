@@ -35,7 +35,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_01_page_01',
-          title: 'Number 1',
+          title: 'O N E ONE',
           primaryText: '1',
           secondaryText: 'One',
           description: 'One apple',
@@ -46,7 +46,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_02',
-          title: 'Number 2',
+          title: 'T W O TWO',
           primaryText: '2',
           secondaryText: 'Two',
           description: 'Two balls',
@@ -57,7 +57,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_03',
-          title: 'Number 3',
+          title: 'T H R E E THREE',
           primaryText: '3',
           secondaryText: 'Three',
           description: 'Three stars',
@@ -68,7 +68,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_04',
-          title: 'Number 4',
+          title: 'F O U R FOUR',
           primaryText: '4',
           secondaryText: 'Four',
           description: 'Four flowers',
@@ -79,7 +79,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_05',
-          title: 'Number 5',
+          title: 'F I V E FIVE',
           primaryText: '5',
           secondaryText: 'Five',
           description: 'Five balloons',
@@ -90,7 +90,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_06',
-          title: 'Number 6',
+          title: 'S I X SIX',
           primaryText: '6',
           secondaryText: 'Six',
           description: 'Six birds',
@@ -101,7 +101,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_07',
-          title: 'Number 7',
+          title: 'S E V E N SEVEN',
           primaryText: '7',
           secondaryText: 'Seven',
           description: 'Seven butterflies',
@@ -112,7 +112,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_08',
-          title: 'Number 8',
+          title: 'E I G H T EIGHT',
           primaryText: '8',
           secondaryText: 'Eight',
           description: 'Eight candies',
@@ -123,7 +123,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_09',
-          title: 'Number 9',
+          title: 'N I N E NINE',
           primaryText: '9',
           secondaryText: 'Nine',
           description: 'Nine pencils',
@@ -134,7 +134,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_01_page_10',
-          title: 'Number 10',
+          title: 'T E N TEN',
           primaryText: '10',
           secondaryText: 'Ten',
           description: 'Ten hearts',
@@ -159,7 +159,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_02_page_01',
-          title: 'Number 11',
+          title: 'E L E V E N ELEVEN',
           primaryText: '11',
           secondaryText: 'Eleven',
           description: 'Eleven flowers',
@@ -170,7 +170,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_02_page_02',
-          title: 'Number 12',
+          title: 'T W E L V E TWELVE',
           primaryText: '12',
           secondaryText: 'Twelve',
           description: 'Twelve stars',
@@ -181,7 +181,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_02_page_03',
-          title: 'Number 13',
+          title: 'T H I R T E E N THIRTEEN',
           primaryText: '13',
           secondaryText: 'Thirteen',
           imagePath: 'assets/images/lessons/math/numbers/thirteen.png',
@@ -189,7 +189,76 @@ class MathLessonsData {
           backgroundColor: '#E3F2FD',
           pageNumber: 3,
         ),
-        // Continue for 14-20
+        LessonPage(
+          id: 'math_02_page_04',
+          title: 'F O U R T E E N FOURTEEN',
+          primaryText: '14',
+          secondaryText: 'Fourteen',
+          imagePath: 'assets/images/lessons/math/numbers/fourteen.png',
+          audioPath: 'assets/audio/math/fourteen.mp3',
+          backgroundColor: '#F3E5F5',
+          pageNumber: 4,
+        ),
+        LessonPage(
+          id: 'math_02_page_05',
+          title: 'F I F T E E N FIFTEEN',
+          primaryText: '15',
+          secondaryText: 'Fifteen',
+          imagePath: 'assets/images/lessons/math/numbers/fifteen.png',
+          audioPath: 'assets/audio/math/fifteen.mp3',
+          backgroundColor: '#FFF3E0',
+          pageNumber: 5,
+        ),
+        LessonPage(
+          id: 'math_02_page_06',
+          title: 'S I X T E E N SIXTEEN',
+          primaryText: '16',
+          secondaryText: 'Sixteen',
+          imagePath: 'assets/images/lessons/math/numbers/sixteen.png',
+          audioPath: 'assets/audio/math/sixteen.mp3',
+          backgroundColor: '#E0F2F1',
+          pageNumber: 6,
+        ),
+        LessonPage(
+          id: 'math_02_page_07',
+          title: 'S E V E N T E E N SEVENTEEN',
+          primaryText: '17',
+          secondaryText: 'Seventeen',
+          imagePath: 'assets/images/lessons/math/numbers/seventeen.png',
+          audioPath: 'assets/audio/math/seventeen.mp3',
+          backgroundColor: '#FCE4EC',
+          pageNumber: 7,
+        ),
+        LessonPage(
+          id: 'math_02_page_08',
+          title: 'E I G H T E E N EIGHTEEN',
+          primaryText: '18',
+          secondaryText: 'Eighteen',
+          imagePath: 'assets/images/lessons/math/numbers/eighteen.png',
+          audioPath: 'assets/audio/math/eighteen.mp3',
+          backgroundColor: '#FFF9C4',
+          pageNumber: 8,
+        ),
+        LessonPage(
+          id: 'math_02_page_09',
+          title: 'N I N E T E E N NINETEEN',
+          primaryText: '19',
+          secondaryText: 'Nineteen',
+          imagePath: 'assets/images/lessons/math/numbers/nineteen.png',
+          audioPath: 'assets/audio/math/nineteen.mp3',
+          backgroundColor: '#E1F5FE',
+          pageNumber: 9,
+        ),
+        LessonPage(
+          id: 'math_02_page_10',
+          title: 'T W E N T Y TWENTY',
+          primaryText: '20',
+          secondaryText: 'Twenty',
+          imagePath: 'assets/images/lessons/math/numbers/twenty.png',
+          audioPath: 'assets/audio/math/twenty.mp3',
+          backgroundColor: '#FFEBEE',
+          pageNumber: 10,
+        ),
       ],
     );
   }
@@ -286,7 +355,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_05_page_01',
-          title: 'Circle',
+          title: 'C I R C L E CIRCLE',
           primaryText: 'Circle',
           secondaryText: 'Round Shape',
           description: 'A circle is round',
@@ -297,7 +366,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_05_page_02',
-          title: 'Square',
+          title: 'S Q U A R E SQUARE',
           primaryText: 'Square',
           secondaryText: '4 Equal Sides',
           description: 'A square has 4 corners',
@@ -308,7 +377,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_05_page_03',
-          title: 'Triangle',
+          title: 'T R I A N G L E TRIANGLE',
           primaryText: 'Triangle',
           secondaryText: '3 Sides',
           description: 'A triangle has 3 corners',
@@ -331,31 +400,31 @@ class MathLessonsData {
       category: 'Math',
       iconPath: 'assets/images/icons/shapes_icon.png',
       pages: [
-      LessonPage(
-      id: 'math_06_page_01',
-      title: 'Rectangle',
-      primaryText: 'Rectangle',
-      secondaryText: 'Long Shape',
-      description: 'A rectangle is longer than a square',
-      imagePath: 'assets/images/lessons/math/shapes/rectangle.png',
-      audioPath: 'assets/audio/math/shape_rectangle.mp3',
-      backgroundColor: '#FCE4EC',
-      pageNumber: 1,
-    ),
-    LessonPage(
-    id: 'math_06_page_02',
-    title: 'Oval',
-    primaryText: 'Oval',
-    secondaryText: 'Egg Shape',
-    description: 'An oval looks like an egg',
-    imagePath: 'assets/images/lessons/math/shapes/oval.png',
-    audioPath: 'assets/audio/math/shape_oval.mp3',
-    backgroundColor: '#F0E6FF',
-    pageNumber: 2,
-    ),
+        LessonPage(
+          id: 'math_06_page_01',
+          title: 'R E C T A N G L E RECTANGLE',
+          primaryText: 'Rectangle',
+          secondaryText: 'Long Shape',
+          description: 'A rectangle is longer than a square',
+          imagePath: 'assets/images/lessons/math/shapes/rectangle.png',
+          audioPath: 'assets/audio/math/shape_rectangle.mp3',
+          backgroundColor: '#FCE4EC',
+          pageNumber: 1,
+        ),
+        LessonPage(
+          id: 'math_06_page_02',
+          title: 'O V A L OVAL',
+          primaryText: 'Oval',
+          secondaryText: 'Egg Shape',
+          description: 'An oval looks like an egg',
+          imagePath: 'assets/images/lessons/math/shapes/oval.png',
+          audioPath: 'assets/audio/math/shape_oval.mp3',
+          backgroundColor: '#F0E6FF',
+          pageNumber: 2,
+        ),
         LessonPage(
           id: 'math_06_page_03',
-          title: 'Star',
+          title: 'S T A R STAR',
           primaryText: 'Star',
           secondaryText: '5 Points',
           description: 'A star has 5 points',
@@ -367,7 +436,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 7: Big and Small
+
+  // Lesson 7: Big and Small
   static Lesson _getLesson7BigAndSmall() {
     return Lesson(
       id: 'math_07',
@@ -379,7 +449,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_07_page_01',
-          title: 'Big Ball',
+          title: 'B I G BIG',
           primaryText: 'Big',
           secondaryText: 'Large Size',
           description: 'This ball is big',
@@ -390,7 +460,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_07_page_02',
-          title: 'Small Ball',
+          title: 'S M A L L SMALL',
           primaryText: 'Small',
           secondaryText: 'Little Size',
           description: 'This ball is small',
@@ -401,7 +471,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_07_page_03',
-          title: 'Compare',
+          title: 'C O M P A R E COMPARE',
           primaryText: 'Compare',
           secondaryText: 'Which is Bigger?',
           description: 'The elephant is bigger than the mouse',
@@ -413,7 +483,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 8: Tall and Short
+
+  // Lesson 8: Tall and Short
   static Lesson _getLesson8TallAndShort() {
     return Lesson(
       id: 'math_08',
@@ -425,7 +496,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_08_page_01',
-          title: 'Tall Tree',
+          title: 'T A L L TALL',
           primaryText: 'Tall',
           secondaryText: 'High',
           description: 'This tree is tall',
@@ -436,7 +507,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_08_page_02',
-          title: 'Short Tree',
+          title: 'S H O R T SHORT',
           primaryText: 'Short',
           secondaryText: 'Low',
           description: 'This tree is short',
@@ -448,7 +519,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 9: Simple Addition 1-5
+
+  // Lesson 9: Simple Addition 1-5
   static Lesson _getLesson9SimpleAddition1to5() {
     return Lesson(
       id: 'math_09',
@@ -516,7 +588,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 10: Simple Addition 6-10
+
+  // Lesson 10: Simple Addition 6-10
   static Lesson _getLesson10SimpleAddition6to10() {
     return Lesson(
       id: 'math_10',
@@ -562,7 +635,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 11: Simple Subtraction 1-5
+
+  // Lesson 11: Simple Subtraction 1-5
   static Lesson _getLesson11SimpleSubtraction1to5() {
     return Lesson(
       id: 'math_11',
@@ -619,7 +693,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 12: Simple Subtraction 6-10
+
+  // Lesson 12: Simple Subtraction 6-10
   static Lesson _getLesson12SimpleSubtraction6to10() {
     return Lesson(
       id: 'math_12',
@@ -629,28 +704,28 @@ class MathLessonsData {
       category: 'Math',
       iconPath: 'assets/images/icons/subtraction_icon.png',
       pages: [
-        LessonPage(
-          id: 'math_12_page_01',
-          title: '6 - 3 = 3',
-          primaryText: '6 - 3',
-          secondaryText: '= 3',
-          description: 'Six minus three equals three',
-          imagePath: 'assets/images/lessons/math/subtraction/six_minus_three.png',
-          audioPath: 'assets/audio/math/sub_6_3.mp3',
-          backgroundColor: '#E3F2FD',
-          pageNumber: 1,
-        ),
-        LessonPage(
-          id: 'math_12_page_02',
-          title: '8 - 4 = 4',
-          primaryText: '8 - 4',
-          secondaryText: '= 4',
-          description: 'Eight minus four equals four',
-          imagePath: 'assets/images/lessons/math/subtraction/eight_minus_four.png',
-          audioPath: 'assets/audio/math/sub_8_4.mp3',
-          backgroundColor: '#E8F5E9',
-          pageNumber: 2,
-        ),
+      LessonPage(
+      id: 'math_12_page_01',
+      title: '6 - 3 = 3',
+      primaryText: '6 - 3',
+      secondaryText: '= 3',
+      description: 'Six minus three equals three',
+      imagePath: 'assets/images/lessons/math/subtraction/six_minus_three.png',
+      audioPath: 'assets/audio/math/sub_6_3.mp3',
+      backgroundColor: '#E3F2FD',
+      pageNumber: 1,
+    ),
+    LessonPage(
+    id: 'math_12_page_02',
+    title: '8 - 4 = 4',
+    primaryText: '8 - 4',
+    secondaryText: '= 4',
+    description: 'Eight minus four equals four',
+      imagePath: 'assets/images/lessons/math/subtraction/eight_minus_four.png',
+      audioPath: 'assets/audio/math/sub_8_4.mp3',
+      backgroundColor: '#E8F5E9',
+      pageNumber: 2,
+    ),
         LessonPage(
           id: 'math_12_page_03',
           title: '10 - 5 = 5',
@@ -665,7 +740,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 13: Number Patterns
+
+  // Lesson 13: Number Patterns
   static Lesson _getLesson13NumberPatterns() {
     return Lesson(
       id: 'math_13',
@@ -677,7 +753,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_13_page_01',
-          title: 'Pattern 1,2,3...',
+          title: 'P A T T E R N PATTERN 1,2,3',
           primaryText: '1, 2, 3',
           secondaryText: 'Counting Up',
           description: 'Numbers go up by one',
@@ -688,7 +764,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_13_page_02',
-          title: 'Pattern 10,9,8...',
+          title: 'P A T T E R N PATTERN 10,9,8',
           primaryText: '10, 9, 8',
           secondaryText: 'Counting Down',
           description: 'Numbers go down by one',
@@ -700,7 +776,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 14: Skip Counting
+
+  // Lesson 14: Skip Counting
   static Lesson _getLesson14SkipCounting() {
     return Lesson(
       id: 'math_14',
@@ -712,7 +789,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_14_page_01',
-          title: 'Count by 2s',
+          title: 'C O U N T COUNT by 2s',
           primaryText: '2, 4, 6',
           secondaryText: 'Skip Count',
           description: 'Count by twos: 2, 4, 6, 8, 10',
@@ -723,7 +800,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_14_page_02',
-          title: 'Count by 5s',
+          title: 'C O U N T COUNT by 5s',
           primaryText: '5, 10, 15',
           secondaryText: 'Skip Count',
           description: 'Count by fives: 5, 10, 15, 20',
@@ -734,7 +811,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_14_page_03',
-          title: 'Count by 10s',
+          title: 'C O U N T COUNT by 10s',
           primaryText: '10, 20, 30',
           secondaryText: 'Skip Count',
           description: 'Count by tens: 10, 20, 30, 40',
@@ -746,7 +823,8 @@ class MathLessonsData {
       ],
     );
   }
-// Lesson 15: Comparing Numbers
+
+  // Lesson 15: Comparing Numbers
   static Lesson _getLesson15ComparingNumbers() {
     return Lesson(
       id: 'math_15',
@@ -758,7 +836,7 @@ class MathLessonsData {
       pages: [
         LessonPage(
           id: 'math_15_page_01',
-          title: 'Greater Than',
+          title: 'G R E A T E R GREATER THAN',
           primaryText: '5 > 3',
           secondaryText: 'Greater',
           description: 'Five is greater than three',
@@ -769,7 +847,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_15_page_02',
-          title: 'Less Than',
+          title: 'L E S S LESS THAN',
           primaryText: '2 < 7',
           secondaryText: 'Less',
           description: 'Two is less than seven',
@@ -780,7 +858,7 @@ class MathLessonsData {
         ),
         LessonPage(
           id: 'math_15_page_03',
-          title: 'Equal To',
+          title: 'E Q U A L EQUAL TO',
           primaryText: '4 = 4',
           secondaryText: 'Equal',
           description: 'Four equals four',

@@ -125,9 +125,9 @@ class LessonPageWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20),
                     child: AudioPlayerButton(
                       audioPath: page.audioPath ?? '',
-                      textToSpeak: page.title.contains('for')
+                      textToSpeak: page.title.contains('')
                           ? page.title
-                          : '${page.primaryText} for ${page.secondaryText}',
+                          : '${page.primaryText}  ${page.secondaryText}',
                       categoryColor: categoryColor,
                     ),
                   ),

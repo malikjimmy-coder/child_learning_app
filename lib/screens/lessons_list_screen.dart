@@ -28,7 +28,7 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
 
   // Load lessons and sync with saved progress
   void _loadLessons() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final progressProvider = context.read<ProgressProvider>();
       final lessonProvider = context.read<LessonProvider>();
 
@@ -38,8 +38,11 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
         completedLessons[entry.key] = entry.value.isCompleted;
       }
 
+      debugPrint('Loading lessons for ${widget.category} with ${completedLessons.length} completed lessons');
+      debugPrint('Completed lessons: ${completedLessons.keys.toList()}');
+
       // Load lessons with progress data
-      lessonProvider.loadLessons(widget.category, completedLessons: completedLessons);
+      await lessonProvider.loadLessons(widget.category, completedLessons: completedLessons);
     });
   }
 
@@ -164,9 +167,10 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
                           arguments: lesson,
                         );
 
-                        // Reload lessons after returning to sync state
+                        // Refresh lesson locks after returning to sync state
                         if (mounted) {
-                          _loadLessons();
+                          final lessonProvider = context.read<LessonProvider>();
+                          lessonProvider.refreshLessonLocks();
                         }
                       }
                     },

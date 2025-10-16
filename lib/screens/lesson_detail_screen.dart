@@ -71,6 +71,8 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
   }
 
   Future<void> _completeLesson() async {
+    debugPrint('Completing lesson: ${widget.lesson.id}');
+    
     // Mark lesson as completed in progress provider
     await context.read<ProgressProvider>().completeLesson(widget.lesson.id);
 
@@ -79,6 +81,8 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
           widget.lesson.id,
           true,
         );
+
+    debugPrint('Lesson ${widget.lesson.id} marked as completed');
 
     if (mounted) {
       // Show success message

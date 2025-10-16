@@ -1,6 +1,7 @@
 // lib/services/audio_service.dart
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter/widgets.dart';
 
 class AudioService {
   static final AudioService _instance = AudioService._internal();
@@ -14,7 +15,9 @@ class AudioService {
   bool _isPlaying = false;
   bool _isSpeaking = false;
   bool _isMusicPlaying = false;
+  bool _isMusicInitialized = false;
   String? _currentAudioPath;
+  String? _currentMusicPath;
 
   /// Get audio player instance
   AudioPlayer get player => _audioPlayer;
@@ -24,6 +27,9 @@ class AudioService {
 
   /// Check if background music is playing
   bool get isMusicPlaying => _isMusicPlaying;
+
+  /// Check if background music is initialized
+  bool get isMusicInitialized => _isMusicInitialized;
 
   /// Get current audio path
   String? get currentAudioPath => _currentAudioPath;
@@ -43,12 +49,6 @@ class AudioService {
     // Setup Background Music Player
     _backgroundMusicPlayer.onPlayerStateChanged.listen((state) {
       _isMusicPlaying = state == PlayerState.playing;
-    });
-
-    // Auto-loop background music
-    _backgroundMusicPlayer.onPlayerComplete.listen((_) async {
-      await _backgroundMusicPlayer.seek(Duration.zero);
-      await _backgroundMusicPlayer.resume();
     });
 
     // Setup TTS
@@ -77,34 +77,60 @@ class AudioService {
     double volume = 0.3, // Lower volume so it doesn't overpower TTS
   }) async {
     try {
-      await _backgroundMusicPlayer.setVolume(volume);
-      await _backgroundMusicPlayer.setReleaseMode(ReleaseMode.loop); // 👈 Loop mode
-      await _backgroundMusicPlayer.play(AssetSource(assetPath));
-      _isMusicPlaying = true;
-      print('✅ Background music started');
+      // Check if same music is already playing
+      if (_isMusicPlaying && _currentMusicPath == assetPath) {
+        print('🎵 Background music already playing: $assetPath');
+        return;
+      }
+
+      // Stop current music if different
+      if (_isMusicPlaying && _currentMusicPath != assetPath) {
+        await stopBackgroundMusic();
+      }
+
+      // Only start if not already playing
+      if (!_isMusicPlaying) {
+        await _backgroundMusicPlayer.setVolume(volume);
+        await _backgroundMusicPlayer.setReleaseMode(ReleaseMode.loop);
+        await _backgroundMusicPlayer.play(AssetSource(assetPath));
+        _isMusicPlaying = true;
+        _currentMusicPath = assetPath;
+        _isMusicInitialized = true;
+        print('✅ Background music started: $assetPath');
+      }
     } catch (e) {
       print('❌ Error playing background music: $e');
       _isMusicPlaying = false;
+      _currentMusicPath = null;
     }
   }
 
   /// Stop background music
   Future<void> stopBackgroundMusic() async {
-    await _backgroundMusicPlayer.stop();
-    _isMusicPlaying = false;
-    print('⏹️ Background music stopped');
+    if (_isMusicPlaying) {
+      await _backgroundMusicPlayer.stop();
+      _isMusicPlaying = false;
+      _currentMusicPath = null;
+      print('⏹️ Background music stopped');
+    }
   }
 
   /// Pause background music
   Future<void> pauseBackgroundMusic() async {
-    await _backgroundMusicPlayer.pause();
-    _isMusicPlaying = false;
+    if (_isMusicPlaying) {
+      await _backgroundMusicPlayer.pause();
+      _isMusicPlaying = false;
+      print('⏸️ Background music paused');
+    }
   }
 
   /// Resume background music
   Future<void> resumeBackgroundMusic() async {
-    await _backgroundMusicPlayer.resume();
-    _isMusicPlaying = true;
+    if (_isMusicInitialized && !_isMusicPlaying) {
+      await _backgroundMusicPlayer.resume();
+      _isMusicPlaying = true;
+      print('▶️ Background music resumed');
+    }
   }
 
   /// Set background music volume
@@ -224,10 +250,41 @@ class AudioService {
     await stopSpeaking();
   }
 
+  /// Handle app lifecycle changes
+  Future<void> handleAppLifecycleChange(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+        // Pause background music when app goes to background or is hidden
+        await pauseBackgroundMusic();
+        break;
+      case AppLifecycleState.resumed:
+        // Resume background music when app comes to foreground
+        await resumeBackgroundMusic();
+        break;
+      case AppLifecycleState.detached:
+        // Stop all audio when app is detached
+        await stopAll();
+        break;
+    }
+  }
+
+  /// Reset music state (useful for development/hot reload)
+  void resetMusicState() {
+    _isMusicInitialized = false;
+    _isMusicPlaying = false;
+    _currentMusicPath = null;
+    print('🔄 Music state reset');
+  }
+
   /// Dispose audio players and TTS
   Future<void> dispose() async {
     await _audioPlayer.dispose();
     await _backgroundMusicPlayer.dispose();
     await _flutterTts.stop();
+    _isMusicInitialized = false;
+    _isMusicPlaying = false;
+    _currentMusicPath = null;
   }
 }

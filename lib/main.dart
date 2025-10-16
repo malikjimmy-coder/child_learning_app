@@ -38,12 +38,23 @@ Future<void> _initializeServices() async {
     await AudioService().init();
     print('✅ Audio Service initialized');
 
-    // Start background music
-    await AudioService().playBackgroundMusic(
-      assetPath: 'audio/background_music2.mp3',
-      volume: 0.2, // 30% volume (adjust as needed)
-    );
-    print('🎵 Background music started');
+    // Start background music only if not already playing
+    final audioService = AudioService();
+    
+    // For development: reset music state on hot reload
+    if (AppConfig.showDebugBanner) {
+      audioService.resetMusicState();
+    }
+    
+    if (!audioService.isMusicInitialized) {
+      await audioService.playBackgroundMusic(
+        assetPath: 'audio/background_music.mp3',
+        volume: 0.1, // 10% volume (adjust as needed)
+      );
+      print('🎵 Background music started');
+    } else {
+      print('🎵 Background music already initialized');
+    }
 
     print('✅ All services initialized successfully');
   } catch (e) {
@@ -69,8 +80,31 @@ void _configureSystemUI() {
   ]);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    AudioService().handleAppLifecycleChange(state);
+  }
 
   @override
   Widget build(BuildContext context) {
