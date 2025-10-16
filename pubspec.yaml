@@ -40,6 +40,7 @@ dependencies:
   google_fonts: ^6.1.0
   audioplayers: ^5.2.1
   intl: ^0.18.1
+  flutter_tts: ^4.0.2
   provider: ^6.1.1                    # State management
 
 dev_dependencies:
