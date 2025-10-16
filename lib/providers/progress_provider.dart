@@ -108,6 +108,7 @@ class ProgressProvider with ChangeNotifier {
 
     notifyListeners();
     await _saveProgress();
+    debugPrint('✅ Lesson $lessonId marked as completed and saved');
   }
 
   // Get progress for specific lesson

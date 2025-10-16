@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/lesson.dart';
 import '../providers/progress_provider.dart';
+import '../providers/lesson_provider.dart';
 import '../widgets/lesson_page_widget.dart';
 import '../utils/constants.dart';
 
@@ -42,10 +43,10 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
 
     // Save progress
     context.read<ProgressProvider>().updateLessonProgress(
-      widget.lesson.id,
-      page,
-      page == widget.lesson.pages.length - 1,
-    );
+          widget.lesson.id,
+          page,
+          false, // Not completed yet
+        );
   }
 
   void _goToPreviousPage() {
@@ -63,15 +64,60 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
         duration: AppAnimations.normal,
         curve: AppAnimations.defaultCurve,
       );
+    } else {
+      // Last page - complete the lesson
+      _completeLesson();
+    }
+  }
+
+  Future<void> _completeLesson() async {
+    // Mark lesson as completed in progress provider
+    await context.read<ProgressProvider>().completeLesson(widget.lesson.id);
+
+    // Update lesson completion in lesson provider (this will unlock next lesson)
+    context.read<LessonProvider>().updateLessonCompletion(
+          widget.lesson.id,
+          true,
+        );
+
+    if (mounted) {
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '🎉 Lesson Completed! Next lesson unlocked!',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.successGreen,
+          duration: const Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+
+      // Wait a bit before going back
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      // Go back to lessons list
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isEnglish = widget.lesson.category == AppConstants.categoryEnglish;
-    final Color categoryColor = isEnglish
-        ? AppColors.englishPrimary
-        : AppColors.mathPrimary;
+    final bool isEnglish =
+        widget.lesson.category == AppConstants.categoryEnglish;
+    final Color categoryColor =
+        isEnglish ? AppColors.englishPrimary : AppColors.mathPrimary;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
@@ -112,7 +158,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
                       onPressed: () {
                         Navigator.popUntil(
                           context,
-                              (route) => route.isFirst,
+                          (route) => route.isFirst,
                         );
                       },
                     ),
@@ -141,7 +187,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
           Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingLarge,
+              horizontal: AppDimensions.paddingSmall,
               vertical: AppDimensions.paddingMedium,
             ),
             child: SafeArea(
@@ -174,27 +220,14 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
 
                   // Next Button
                   _NavigationButton(
-                    icon: Icons.arrow_forward_ios_rounded,
+                    icon: _currentPage == widget.lesson.pages.length - 1
+                        ? Icons.check_circle_rounded
+                        : Icons.arrow_forward_ios_rounded,
                     label: _currentPage == widget.lesson.pages.length - 1
                         ? AppStrings.completeButton
                         : AppStrings.nextButton,
                     isEnabled: true,
-                    onPressed: _currentPage == widget.lesson.pages.length - 1
-                        ? () {
-                      // Mark lesson as completed and go back
-                      context.read<ProgressProvider>().completeLesson(
-                        widget.lesson.id,
-                      );
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(AppStrings.lessonCompleted),
-                          backgroundColor: AppColors.successGreen,
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    }
-                        : _goToNextPage,
+                    onPressed: _goToNextPage,
                   ),
                 ],
               ),
@@ -209,10 +242,8 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(
-        widget.lesson.pages.length > 10
-            ? 10
-            : widget.lesson.pages.length,
-            (index) {
+        widget.lesson.pages.length > 6 ? 6 : widget.lesson.pages.length,
+        (index) {
           final bool isActive = index == _currentPage;
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -222,8 +253,8 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
               shape: BoxShape.circle,
               color: isActive
                   ? (widget.lesson.category == AppConstants.categoryEnglish
-                  ? AppColors.englishPrimary
-                  : AppColors.mathPrimary)
+                      ? AppColors.englishPrimary
+                      : AppColors.mathPrimary)
                   : AppColors.textLight.withOpacity(0.3),
             ),
           );
@@ -255,12 +286,11 @@ class _NavigationButton extends StatelessWidget {
       icon: Icon(icon, size: 18),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: isEnabled
-            ? AppColors.primaryBlue
-            : AppColors.textLight,
+        backgroundColor:
+            isEnabled ? AppColors.primaryBlue : AppColors.textLight,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
+          horizontal: 16,
           vertical: 12,
         ),
         shape: RoundedRectangleBorder(

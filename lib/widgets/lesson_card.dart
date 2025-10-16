@@ -25,99 +25,139 @@ class LessonCard extends StatelessWidget {
         bottom: AppDimensions.marginMedium,
       ),
       child: Material(
-        color: Colors.white,
+        color: lesson.isLocked
+            ? AppColors.cardBackground.withOpacity(0.5) // Dim locked lessons
+            : Colors.white,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        elevation: AppDimensions.elevationMedium,
+        elevation: lesson.isLocked ? 0 : AppDimensions.elevationMedium,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-          onTap: onTap,
-          child: Container(
-            height: AppDimensions.lessonCardHeight,
-            padding: const EdgeInsets.all(AppDimensions.paddingMedium),
-            child: Row(
-              children: [
-                // Lesson Icon
-                Container(
-                  width: AppDimensions.lessonIconSize,
-                  height: AppDimensions.lessonIconSize,
-                  decoration: BoxDecoration(
-                    color: categoryColor.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: lesson.iconPath.isNotEmpty
-                        ? Image.asset(
-                      lesson.iconPath,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          isEnglish
-                              ? Icons.book_rounded
-                              : Icons.calculate_rounded,
-                          size: 40,
-                          color: categoryColor,
-                        );
-                      },
-                    )
-                        : Icon(
-                      isEnglish
-                          ? Icons.book_rounded
-                          : Icons.calculate_rounded,
-                      size: 40,
-                      color: categoryColor,
+          onTap: lesson.isLocked ? null : onTap, // Disable tap if locked
+          child: Opacity(
+            opacity: lesson.isLocked ? 0.5 : 1.0, // Reduce opacity for locked lessons
+            child: Container(
+              height: AppDimensions.lessonCardHeight,
+              padding: const EdgeInsets.all(AppDimensions.paddingSmall),
+              child: Row(
+                children: [
+                  // Lesson Icon
+                  Container(
+                    width: AppDimensions.lessonIconSize,
+                    height: AppDimensions.lessonIconSize,
+                    decoration: BoxDecoration(
+                      color: categoryColor.withOpacity(lesson.isLocked ? 0.3 : 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: lesson.isLocked
+                          ? Icon(
+                        Icons.lock_rounded,
+                        size: 40,
+                        color: categoryColor.withOpacity(0.5),
+                      )
+                          : (lesson.iconPath.isNotEmpty
+                          ? Image.asset(
+                        lesson.iconPath,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            isEnglish
+                                ? Icons.book_rounded
+                                : Icons.calculate_rounded,
+                            size: 40,
+                            color: categoryColor,
+                          );
+                        },
+                      )
+                          : Icon(
+                        isEnglish
+                            ? Icons.book_rounded
+                            : Icons.calculate_rounded,
+                        size: 40,
+                        color: categoryColor,
+                      )),
                     ),
                   ),
-                ),
 
-                const SizedBox(width: 16),
+                  const SizedBox(width: 16),
 
-                // Lesson Details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Lesson Number
-                      Text(
-                        'Lesson ${lesson.lessonNumber}',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: categoryColor,
-                          fontWeight: FontWeight.w600,
+                  // Lesson Details
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Lesson Number
+                        Row(
+                          children: [
+                            Text(
+                              'Lesson ${lesson.lessonNumber}',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: categoryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            if (lesson.isLocked) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.textLight.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Text(
+                                  'LOCKED',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textLight,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
-                      ),
 
-                      const SizedBox(height: 4),
+                        const SizedBox(height: 4),
 
-                      // Lesson Title
-                      Text(
-                        lesson.title,
-                        style: AppTextStyles.heading3.copyWith(
-                          fontSize: 18,
+                        // Lesson Title
+                        Text(
+                          lesson.title,
+                          style: AppTextStyles.heading3.copyWith(
+                            fontSize: 18,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
 
-                      const SizedBox(height: 4),
+                        const SizedBox(height: 4),
 
-                      // Lesson Subtitle
-                      Text(
-                        lesson.subtitle,
-                        style: AppTextStyles.bodySmall,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                        // Lesson Subtitle or Lock Message
+                        Text(
+                          lesson.isLocked
+                              ? 'Complete previous lesson to unlock'
+                              : lesson.subtitle,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontStyle: lesson.isLocked ? FontStyle.italic : FontStyle.normal,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                const SizedBox(width: 8),
+                  const SizedBox(width: 8),
 
-                // Status Indicator
-                _buildStatusIndicator(lesson),
-              ],
+                  // Status Indicator
+                  _buildStatusIndicator(lesson),
+                ],
+              ),
             ),
           ),
         ),
@@ -126,7 +166,20 @@ class LessonCard extends StatelessWidget {
   }
 
   Widget _buildStatusIndicator(Lesson lesson) {
-    if (lesson.isCompleted) {
+    if (lesson.isLocked) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.textLight.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.lock_rounded,
+          color: AppColors.textLight,
+          size: 24,
+        ),
+      );
+    } else if (lesson.isCompleted) {
       return Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(

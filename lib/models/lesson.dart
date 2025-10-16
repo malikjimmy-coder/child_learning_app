@@ -2,17 +2,18 @@
 import 'lesson_page.dart';
 
 class Lesson {
-  final String id;                    // Unique identifier (e.g., "eng_01", "math_01")
-  final int lessonNumber;             // Sequential number (1, 2, 3...)
-  final String title;                 // "Learn Alphabets A-Z"
-  final String subtitle;              // "Discover all English letters"
-  final String category;              // "English" or "Math"
-  final String iconPath;              // Asset path for lesson icon
-  final List<LessonPage> pages;       // Content pages within lesson
-  bool isCompleted;                   // Completion status
-  int lastViewedPage;                 // Resume functionality
-  final DateTime createdAt;           // When lesson was created
-  DateTime? completedAt;              // When lesson was completed
+  final String id;
+  final int lessonNumber;
+  final String title;
+  final String subtitle;
+  final String category;
+  final String iconPath;
+  final List<LessonPage> pages;
+  bool isCompleted;
+  int lastViewedPage;
+  final DateTime createdAt;
+  DateTime? completedAt;
+  bool isLocked; // NEW: Add this field
 
   Lesson({
     required this.id,
@@ -26,6 +27,7 @@ class Lesson {
     this.lastViewedPage = 0,
     DateTime? createdAt,
     this.completedAt,
+    this.isLocked = true, // NEW: Default to locked
   }) : createdAt = createdAt ?? DateTime.now();
 
   // Get total pages count
@@ -65,6 +67,7 @@ class Lesson {
       'lastViewedPage': lastViewedPage,
       'createdAt': createdAt.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
+      'isLocked': isLocked, // NEW
     };
   }
 
@@ -88,6 +91,7 @@ class Lesson {
       completedAt: json['completedAt'] != null
           ? DateTime.parse(json['completedAt'] as String)
           : null,
+      isLocked: json['isLocked'] as bool? ?? true, // NEW
     );
   }
 
@@ -104,6 +108,7 @@ class Lesson {
     int? lastViewedPage,
     DateTime? createdAt,
     DateTime? completedAt,
+    bool? isLocked, // NEW
   }) {
     return Lesson(
       id: id ?? this.id,
@@ -117,6 +122,7 @@ class Lesson {
       lastViewedPage: lastViewedPage ?? this.lastViewedPage,
       createdAt: createdAt ?? this.createdAt,
       completedAt: completedAt ?? this.completedAt,
+      isLocked: isLocked ?? this.isLocked, // NEW
     );
   }
 
@@ -124,7 +130,7 @@ class Lesson {
   String toString() {
     return 'Lesson(id: $id, lessonNumber: $lessonNumber, title: $title, '
         'category: $category, isCompleted: $isCompleted, '
-        'lastViewedPage: $lastViewedPage, totalPages: $totalPages)';
+        'lastViewedPage: $lastViewedPage, totalPages: $totalPages, isLocked: $isLocked)';
   }
 
   @override

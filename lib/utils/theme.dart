@@ -12,7 +12,7 @@ class AppTheme {
       brightness: Brightness.light,
 
       // Color Scheme
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primaryBlue,
         secondary: AppColors.accentOrange,
         surface: AppColors.backgroundWhite,
@@ -56,7 +56,7 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         color: AppColors.backgroundWhite,
         elevation: AppDimensions.elevationMedium,
         shape: RoundedRectangleBorder(
@@ -161,7 +161,7 @@ class AppTheme {
       ),
 
       // Dialog Theme
-      dialogTheme: DialogThemeData(
+      dialogTheme: DialogTheme(
         elevation: AppDimensions.elevationXHigh,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),

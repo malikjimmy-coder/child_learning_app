@@ -13,14 +13,14 @@ class LessonProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get currentCategory => _currentCategory;
 
-  // Load lessons by category
-  Future<void> loadLessons(String category) async {
+  // Load lessons by category and sync with saved progress
+  Future<void> loadLessons(String category, {Map<String, bool>? completedLessons}) async {
     _isLoading = true;
     _currentCategory = category;
     notifyListeners();
 
-    // Simulate loading delay (remove in production or reduce to 100ms)
-    await Future.delayed(const Duration(milliseconds: 500));
+    // Simulate loading delay
+    await Future.delayed(const Duration(milliseconds: 300));
 
     try {
       if (category == 'English') {
@@ -30,6 +30,14 @@ class LessonProvider with ChangeNotifier {
       } else {
         _allLessons = [];
       }
+
+      // Sync with saved progress if provided
+      if (completedLessons != null) {
+        _syncWithProgress(completedLessons);
+      }
+
+      // Initialize lesson locks
+      _updateLessonLocks();
     } catch (e) {
       debugPrint('Error loading lessons: $e');
       _allLessons = [];
@@ -37,6 +45,36 @@ class LessonProvider with ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  // Sync lessons with saved progress
+  void _syncWithProgress(Map<String, bool> completedLessons) {
+    for (var lesson in _allLessons) {
+      if (completedLessons.containsKey(lesson.id)) {
+        lesson.isCompleted = completedLessons[lesson.id]!;
+      }
+    }
+  }
+
+  // Update lesson locks based on completion status
+  void _updateLessonLocks() {
+    if (_allLessons.isEmpty) return;
+
+    // Sort lessons by lesson number
+    _allLessons.sort((a, b) => a.lessonNumber.compareTo(b.lessonNumber));
+
+    // First lesson is always unlocked
+    _allLessons[0].isLocked = false;
+
+    // Lock/unlock subsequent lessons based on previous lesson completion
+    for (int i = 1; i < _allLessons.length; i++) {
+      // Unlock if previous lesson is completed
+      _allLessons[i].isLocked = !_allLessons[i - 1].isCompleted;
+
+      debugPrint('Lesson ${_allLessons[i].lessonNumber}: ${_allLessons[i].title} - '
+          'isLocked: ${_allLessons[i].isLocked}, '
+          'Previous lesson completed: ${_allLessons[i - 1].isCompleted}');
+    }
   }
 
   // Get lessons by category
@@ -70,11 +108,24 @@ class LessonProvider with ChangeNotifier {
     }
   }
 
-  // Update lesson completion status
+  // Update lesson completion and unlock next lesson
   void updateLessonCompletion(String lessonId, bool isCompleted) {
     final lessonIndex = _allLessons.indexWhere((l) => l.id == lessonId);
     if (lessonIndex != -1) {
       _allLessons[lessonIndex].isCompleted = isCompleted;
+
+      if (isCompleted) {
+        _allLessons[lessonIndex].completedAt = DateTime.now();
+      }
+
+      // Update locks for all lessons
+      _updateLessonLocks();
+
+      debugPrint('✅ Lesson ${_allLessons[lessonIndex].title} completed');
+      if (lessonIndex < _allLessons.length - 1) {
+        debugPrint('🔓 Next lesson unlocked: ${_allLessons[lessonIndex + 1].title}');
+      }
+
       notifyListeners();
     }
   }
@@ -110,6 +161,11 @@ class LessonProvider with ChangeNotifier {
         .length;
   }
 
+  // Get unlocked lessons count
+  int getUnlockedLessonsCount() {
+    return _allLessons.where((lesson) => !lesson.isLocked).length;
+  }
+
   // Check if all lessons in a category are completed
   bool isAllLessonsCompleted(String category) {
     final categoryLessons = getLessonsByCategory(category);
@@ -122,6 +178,7 @@ class LessonProvider with ChangeNotifier {
     for (var lesson in _allLessons) {
       lesson.isCompleted = false;
       lesson.lastViewedPage = 0;
+      lesson.isLocked = lesson.lessonNumber != 1;
     }
     notifyListeners();
   }
@@ -130,6 +187,13 @@ class LessonProvider with ChangeNotifier {
   void clearLessons() {
     _allLessons.clear();
     _currentCategory = '';
+    notifyListeners();
+  }
+
+  // Reload lessons with current progress
+  void reloadWithProgress(Map<String, bool> completedLessons) {
+    _syncWithProgress(completedLessons);
+    _updateLessonLocks();
     notifyListeners();
   }
 }

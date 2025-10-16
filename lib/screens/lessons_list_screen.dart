@@ -2,12 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/lesson_provider.dart';
+import '../providers/progress_provider.dart';
 import '../widgets/lesson_card.dart';
 import '../utils/constants.dart';
 import '../utils/routes.dart';
 
 class LessonsListScreen extends StatefulWidget {
-  final String category; // 'English' or 'Math'
+  final String category;
 
   const LessonsListScreen({
     Key? key,
@@ -22,15 +23,30 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
   @override
   void initState() {
     super.initState();
-    // Load lessons when screen initializes
+    _loadLessons();
+  }
+
+  // Load lessons and sync with saved progress
+  void _loadLessons() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LessonProvider>().loadLessons(widget.category);
+      final progressProvider = context.read<ProgressProvider>();
+      final lessonProvider = context.read<LessonProvider>();
+
+      // Get completed lessons from progress
+      final completedLessons = <String, bool>{};
+      for (var entry in progressProvider.progressMap.entries) {
+        completedLessons[entry.key] = entry.value.isCompleted;
+      }
+
+      // Load lessons with progress data
+      lessonProvider.loadLessons(widget.category, completedLessons: completedLessons);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final lessonProvider = context.watch<LessonProvider>();
+    final progressProvider = context.watch<ProgressProvider>();
     final lessons = lessonProvider.getLessonsByCategory(widget.category);
 
     final bool isEnglish = widget.category == AppConstants.categoryEnglish;
@@ -49,11 +65,11 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
             Container(
               decoration: BoxDecoration(
                 gradient: gradient,
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: AppColors.shadow,
                     blurRadius: 10,
-                    offset: const Offset(0, 5),
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),
@@ -78,7 +94,7 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
                       // Title
                       Expanded(
                         child: Text(
-                          '${widget.category} ${AppStrings.englishLessonsTitle.split(' ').last}',
+                          '${widget.category} Lessons',
                           style: AppTextStyles.heading2.copyWith(
                             color: Colors.white,
                           ),
@@ -116,7 +132,7 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.school_outlined,
                       size: 80,
                       color: AppColors.textLight,
@@ -140,12 +156,19 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
                   final lesson = lessons[index];
                   return LessonCard(
                     lesson: lesson,
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.lessonDetail,
-                        arguments: lesson,
-                      );
+                    onTap: () async {
+                      if (!lesson.isLocked) {
+                        await Navigator.pushNamed(
+                          context,
+                          AppRoutes.lessonDetail,
+                          arguments: lesson,
+                        );
+
+                        // Reload lessons after returning to sync state
+                        if (mounted) {
+                          _loadLessons();
+                        }
+                      }
                     },
                   );
                 },
