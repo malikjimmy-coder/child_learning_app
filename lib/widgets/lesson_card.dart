@@ -33,7 +33,7 @@ class LessonCard extends StatelessWidget {
           onTap: onTap,
           child: Container(
             height: AppDimensions.lessonCardHeight,
-            padding: const EdgeInsets.all(AppDimensions.paddingMedium),
+            padding: const EdgeInsets.all(AppDimensions.paddingSmall),
             child: Row(
               children: [
                 // Lesson Icon
@@ -88,7 +88,7 @@ class LessonCard extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 2),
 
                       // Lesson Title
                       Text(

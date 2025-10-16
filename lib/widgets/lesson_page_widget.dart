@@ -22,7 +22,7 @@ class LessonPageWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         constraints: BoxConstraints(
-          minHeight: screenHeight - 200, // Account for top/bottom bars
+          minHeight: screenHeight - 200,
         ),
         padding: const EdgeInsets.all(AppDimensions.paddingLarge),
         child: Column(
@@ -35,17 +35,18 @@ class LessonPageWidget extends StatelessWidget {
                 maxWidth: double.infinity,
               ),
               decoration: BoxDecoration(
-                color: _getBackgroundColor(),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusLarge,),
+                border: Border.all(color: Colors.grey.withOpacity(0.4),width: 1),
                 boxShadow: [
                   BoxShadow(
-                    color: categoryColor.withOpacity(0.2),
+                    color: categoryColor.withOpacity(0.0),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(AppDimensions.paddingLarge),
+              padding: const EdgeInsets.all(AppDimensions.paddingSmall),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
                 child: Image.asset(
@@ -66,7 +67,7 @@ class LessonPageWidget extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
             // Text Content Section
             Container(
@@ -75,6 +76,7 @@ class LessonPageWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                border: Border.all(color: Colors.grey.withOpacity(0.4),width: 1),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadow,
@@ -118,15 +120,17 @@ class LessonPageWidget extends StatelessWidget {
                       ),
                     ),
 
-                  // Audio Button (if audio available)
-                  if (page.audioPath != null && page.audioPath!.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: AudioPlayerButton(
-                        audioPath: page.audioPath!,
-                        categoryColor: categoryColor,
-                      ),
+                  // Audio Button (always show for pronunciation)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: AudioPlayerButton(
+                      audioPath: page.audioPath ?? '',
+                      textToSpeak: page.title.contains('for')
+                          ? page.title
+                          : '${page.primaryText} for ${page.secondaryText}',
+                      categoryColor: categoryColor,
                     ),
+                  ),
                 ],
               ),
             ),
@@ -140,6 +144,6 @@ class LessonPageWidget extends StatelessWidget {
     if (page.backgroundColor != null && page.backgroundColor!.isNotEmpty) {
       return Helpers.parseColor(page.backgroundColor!);
     }
-    return categoryColor.withOpacity(0.1);
+    return categoryColor.withOpacity(0.5);
   }
 }

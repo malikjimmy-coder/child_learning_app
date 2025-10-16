@@ -39,9 +39,9 @@ class EnglishLessonsData {
           primaryText: 'A',
           secondaryText: 'Apple',
           description: 'A is the first letter of the alphabet',
-          imagePath: 'assets/images/lessons/english/alphabets/a_apple.png',
+          imagePath: 'assets/images/a_apple.png',
           audioPath: 'assets/audio/english/a.mp3',
-          backgroundColor: '#FFE6E6',
+
           pageNumber: 1,
         ),
         LessonPage(

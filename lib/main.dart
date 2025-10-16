@@ -38,6 +38,13 @@ Future<void> _initializeServices() async {
     await AudioService().init();
     print('✅ Audio Service initialized');
 
+    // Start background music
+    await AudioService().playBackgroundMusic(
+      assetPath: 'audio/background_music2.mp3',
+      volume: 0.2, // 30% volume (adjust as needed)
+    );
+    print('🎵 Background music started');
+
     print('✅ All services initialized successfully');
   } catch (e) {
     print('❌ Error initializing services: $e');
