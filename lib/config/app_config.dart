@@ -7,7 +7,7 @@ class AppConfig {
 
   // Developer Information
   static const String developerName = 'Your Name';
-  static const String developerEmail = 'your.email@example.com';
+  static const String developerEmail = 'your.email@rapidevsol.com';
   static const String supportEmail = 'support@kidslearninghub.com';
 
   // API Configuration (for future use)
